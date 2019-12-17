@@ -1,0 +1,10 @@
+name: McDreams
+main: fr.theskinter.mcdreams.McDreams
+version: 1.0.0
+description:
+author: TheSkinter
+softdepend:
+depend:
+commands:
+  mcdreams:
+  meetandgreet:
