@@ -24,7 +24,7 @@ import fr.theskinter.mcdreams.utils.filter.PlayerSorter;
 import lombok.Getter;
 
 public class GUI_MeetAndGreet {
-
+	
 	@Getter public final MeetAndGreet_Main_Menu mainMenu;
 	@Getter public final MeetAndGreet_Player_List_Menu playersMenu;
 	@Getter public final Map<UUID,Integer> playerListPageBackup = new HashMap<>();
