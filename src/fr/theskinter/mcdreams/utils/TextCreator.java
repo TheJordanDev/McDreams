@@ -66,17 +66,17 @@ public class TextCreator {
 				String command;
 				if (rawCommand.startsWith("/")) { command = rawCommand; }
 				else {command = "/"+rawCommand; }
-				message.setClickEvent(new ClickEvent(net.md_5.bungee.api.chat.ClickEvent.Action.RUN_COMMAND, command));
+				message.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
 				return this;
 			}
 			
 			public Text openUrlOnClick(String url) {
-				message.setClickEvent(new ClickEvent(net.md_5.bungee.api.chat.ClickEvent.Action.OPEN_URL, url));
+				message.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
 				return this;
 			}
 			
 			public Text showTextOnHover(String text) {
-				message.setHoverEvent(new HoverEvent(net.md_5.bungee.api.chat.HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(text).create()));
+				message.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(text).create()));
 				return this;
 			}
 			
