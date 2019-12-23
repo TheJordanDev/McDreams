@@ -334,8 +334,12 @@ public class GUI_McDreams {
 				} else {
 					creator.setName("§c§l✖FLY✖");
 				}
+				creator.setMaterial(Material.FEATHER);
+			} else {
+				creator.setName("§c§lERREUR");
+				creator.setMaterial(Material.STAINED_GLASS_PANE);
+				creator.setByte((byte)14);
 			}
-			creator.setMaterial(Material.FEATHER);
 			return creator.build(); 	
 		}
 		
@@ -365,7 +369,6 @@ public class GUI_McDreams {
 		}
 		
 		public McDreams_Players_Infos_Menu() {
-
 		}
 		
 		public Inventory build(UUID userID,UUID targetID) {

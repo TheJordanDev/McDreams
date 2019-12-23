@@ -17,6 +17,7 @@ import fr.theskinter.mcdreams.guis.GUI_McDreams;
 import fr.theskinter.mcdreams.guis.GUI_MeetAndGreet;
 import fr.theskinter.mcdreams.listeners.JoueurEventListener;
 import fr.theskinter.mcdreams.ping.PingListener;
+import fr.theskinter.mcdreams.utils.Autopia;
 import fr.theskinter.mcdreams.utils.ScoreBoard;
 import fr.theskinter.mcdreams.utils.Skins;
 import fr.theskinter.mcdreams.utils.TextCreator;
@@ -31,19 +32,16 @@ public class McDreams extends JavaPlugin implements Listener {
 	public static McDreams instance;
 	@Getter private List<Joueur> joueurs = new ArrayList<>();
 	@Getter @Setter private boolean maintenance = true;
+	@Getter @Setter private Autopia autopia;
 	@Getter private TextCreator textCreator;
-	@Getter private CitizensAPI_GUI citizensGUI;
+	@Getter @Setter private CitizensAPI_GUI citizensGUI;
 	@Getter private GUI_McDreams mcDreamsGUI;
 	@Getter private GUI_MeetAndGreet meetAndGreetGUI;
  	@Getter private JoueurManager joueurManager;
  	@Getter private ScoreBoard scoreboard;
  	@Getter private Skins skins;
 	
-	@Override	
-	public void onEnable() {
-		instance = this;
-		start();
-	}
+	@Override public void onEnable() { instance = this; start(); }
 	
 	private void start() {
 		registerListeners();
@@ -56,15 +54,14 @@ public class McDreams extends JavaPlugin implements Listener {
 		this.skins = new Skins(instance);
 		scoreboard.start();
 		Joueur.loadAll();
-		if (isEnabled("Citizens")) {
-			this.citizensGUI = new CitizensAPI_GUI();
-			new API_Manager(this);
-		}
+		new API_Manager(this);
 	}
 
 	@Override
 	public void onDisable() {
 		Joueur.saveAll();
+		/*this.autopia.hidePointsToPlayer((Player[])Bukkit.getOnlinePlayers().toArray());
+		this.autopia.getShowedPointsID().clear();*/
 	}
 	
 	public void registerListeners() {
@@ -82,9 +79,7 @@ public class McDreams extends JavaPlugin implements Listener {
 	
 	// ======= PING DETECTOR ======= //
 	@EventHandler
-	public void serverPing(ServerListPingEvent event) throws Exception {
-		new PingListener();
-	}
+	public void serverPing(ServerListPingEvent event) throws Exception { new PingListener(); }
 	
 	public static boolean isEnabled(String plugin) {
 		Plugin plug = Bukkit.getServer().getPluginManager().getPlugin(plugin);

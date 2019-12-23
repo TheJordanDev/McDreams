@@ -24,7 +24,7 @@ public class ScoreBoard {
 	}
 	
 	public void start() {
-		refresh.runTaskTimer(McDreams.instance, 0L, 10L);
+		refresh.runTaskTimer(McDreams.instance, 0L, 30L);
 	}
 	
 	public void stop() {
