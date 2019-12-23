@@ -1,4 +1,4 @@
-package fr.theskinter.mcdreams.utils;
+package fr.theskinter.mcdreams.objects;
 
 import org.bukkit.scheduler.BukkitRunnable;
 

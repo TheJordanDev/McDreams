@@ -1,4 +1,4 @@
-package fr.theskinter.mcdreams.utils;
+package fr.theskinter.mcdreams.objects;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
+
+import fr.theskinter.mcdreams.utils.UtilMath;
 
 public class Cuboid {
 	

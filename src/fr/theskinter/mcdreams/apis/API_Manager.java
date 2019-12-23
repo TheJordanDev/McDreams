@@ -2,7 +2,7 @@ package fr.theskinter.mcdreams.apis;
 
 import fr.theskinter.mcdreams.McDreams;
 import fr.theskinter.mcdreams.apis.citizens.CitizensAPI_GUI;
-import fr.theskinter.mcdreams.utils.Autopia;
+import fr.theskinter.mcdreams.objects.Autopia;
 
 public class API_Manager {
 	
