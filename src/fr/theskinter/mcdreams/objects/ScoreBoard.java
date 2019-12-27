@@ -10,7 +10,6 @@ import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 
 import fr.theskinter.mcdreams.McDreams;
-import fr.theskinter.mcdreams.utils.joueurs.Joueur;
 import lombok.Getter;
 
 public class ScoreBoard {

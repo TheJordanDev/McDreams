@@ -14,6 +14,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import fr.theskinter.mcdreams.McDreams;
 import fr.theskinter.mcdreams.events.GUIInteractEvent;
 import lombok.Getter;
 
@@ -73,7 +74,7 @@ public class GUICreator implements Listener {
 		if (event.getSlotType() == SlotType.OUTSIDE) return;
 		if (event.getClickedInventory().getType() != InventoryType.CHEST) return;
 		if (event.getClickedInventory().getTitle() == null || !event.getClickedInventory().getTitle().equalsIgnoreCase(getName())) return;
-		Bukkit.getServer().getPluginManager().callEvent(new GUIInteractEvent(event, id));
+		McDreams.instance.getServer().getPluginManager().callEvent(new GUIInteractEvent(event, id));
 	}
 	
 }

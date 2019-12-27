@@ -18,10 +18,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import fr.theskinter.mcdreams.McDreams;
 import fr.theskinter.mcdreams.events.GUIInteractEvent;
+import fr.theskinter.mcdreams.objects.Joueur;
 import fr.theskinter.mcdreams.utils.Skulls.SkullUtils;
 import fr.theskinter.mcdreams.utils.creators.GUICreator;
 import fr.theskinter.mcdreams.utils.creators.ItemCreator;
-import fr.theskinter.mcdreams.utils.joueurs.Joueur;
 import lombok.Getter;
 
 public class Skins {

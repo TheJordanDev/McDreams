@@ -13,7 +13,7 @@ import lombok.Getter;
 public class ItemCreator {
 	
 	@Getter
-	private String name = "";
+	private String name = " ";
 	@Getter
 	private Material mat = Material.AIR;
 	@Getter

@@ -22,13 +22,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import fr.theskinter.mcdreams.McDreams;
 import fr.theskinter.mcdreams.events.GUIInteractEvent;
+import fr.theskinter.mcdreams.objects.Joueur;
 import fr.theskinter.mcdreams.utils.Skins;
 import fr.theskinter.mcdreams.utils.Skins.SkinsENUM;
 import fr.theskinter.mcdreams.utils.Skulls.SkullUtils;
 import fr.theskinter.mcdreams.utils.creators.GUICreator;
 import fr.theskinter.mcdreams.utils.creators.ItemCreator;
 import fr.theskinter.mcdreams.utils.filter.PlayerSorter;
-import fr.theskinter.mcdreams.utils.joueurs.Joueur;
 import lombok.Getter;
 
 public class GUI_McDreams {
@@ -85,6 +85,13 @@ public class GUI_McDreams {
 			return creator.build();
 		}
 		
+		private ItemStack regionsBtn() {
+			ItemCreator creator = new ItemCreator();
+			creator.setName("§3§lREGIONS");
+			creator.setMaterial(Material.STRUCTURE_VOID);
+			return creator.build();
+		}
+		
 		public McDreams_Main_Menu() {
 			setName("§3§lMc§6§lDreams");
 			setBackGround(new ItemCreator().setName(" ").setMaterial(Material.STAINED_GLASS_PANE).setByte((byte)7).build());
@@ -98,6 +105,7 @@ public class GUI_McDreams {
 			}
 			setSlot(2, settingsBtn());
 			setSlot(3, playersBtn());
+			setSlot(4, regionsBtn());
 			return super.build();
 		}
 		
@@ -113,6 +121,8 @@ public class GUI_McDreams {
 					player.openInventory(serverMenu.build());
 				} else if (item.isSimilar(playersBtn())) {
 					player.openInventory(playersMenu.open(player.getUniqueId(), 1));
+				} else if (item.isSimilar(regionsBtn())) {
+					player.openInventory(McDreams.instance.getRegionGUI().getRegionListMenu().open(player.getUniqueId(), 1));
 				}
 			}
 		}

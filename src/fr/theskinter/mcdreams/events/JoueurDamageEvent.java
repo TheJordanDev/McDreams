@@ -7,7 +7,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
-import fr.theskinter.mcdreams.utils.joueurs.Joueur;
+import fr.theskinter.mcdreams.objects.Joueur;
 import lombok.Getter;
 
 public class JoueurDamageEvent extends Event implements Cancellable {

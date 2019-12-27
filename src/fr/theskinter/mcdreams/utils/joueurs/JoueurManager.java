@@ -9,13 +9,16 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+import fr.theskinter.mcdreams.objects.Joueur;
 import lombok.Getter;
 
 public class JoueurManager {
 	
-	@Getter public final JoueurSerializationManager jsm;
+	public static JoueurManager instance;
+	@Getter private JoueurSerializationManager jsm;
 	
 	public JoueurManager() {
+		instance = this;
 		this.jsm = new JoueurSerializationManager();
 	}
 	

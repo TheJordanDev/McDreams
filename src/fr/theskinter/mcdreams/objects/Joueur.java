@@ -1,4 +1,4 @@
-package fr.theskinter.mcdreams.utils.joueurs;
+package fr.theskinter.mcdreams.objects;
 
 import java.io.File;
 import java.util.UUID;
@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import fr.theskinter.mcdreams.McDreams;
 import fr.theskinter.mcdreams.utils.FileUtils;
+import fr.theskinter.mcdreams.utils.joueurs.JoueurManager;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -72,7 +73,7 @@ public class Joueur {
 		if (!pluginDir.exists()) { pluginDir.mkdirs(); }
 		for (File file : pluginDir.listFiles()) {
 			if (FilenameUtils.getExtension(file.getPath()).equals("json")) {
-				Joueur joueur = McDreams.instance.getJoueurManager().getJsm().deserialize(FileUtils.load(file));
+				Joueur joueur = JoueurManager.instance.getJsm().deserialize(FileUtils.load(file));
 				if (doesJoueurExist(joueur.getUuid())) {
 					McDreams.instance.getJoueurs().remove(getJoueur(joueur.getUuid()));
 				}
@@ -91,7 +92,7 @@ public class Joueur {
 		File pluginDir = McDreams.instance.getDataFolder();
 		File file = new File(pluginDir+"/joueurs/"+getUuid()+".json");
 		file.getParentFile().mkdirs();
-		FileUtils.save(file, McDreams.instance.getJoueurManager().getJsm().serialize(this));
+		FileUtils.save(file, JoueurManager.instance.getJsm().serialize(this));
 	}
 	
 	public static boolean doesJoueurExist(Player player) {
@@ -110,7 +111,7 @@ public class Joueur {
 	public void reload() {
 		File playerFile = new File(McDreams.instance.getDataFolder()+"/joueurs/"+getUuid()+".json");
 		if (playerFile.exists()) {
-			Joueur joueur = McDreams.instance.getJoueurManager().getJsm().deserialize(FileUtils.load(playerFile));
+			Joueur joueur = JoueurManager.instance.getJsm().deserialize(FileUtils.load(playerFile));
 			if (doesJoueurExist(joueur.getUuid())) {
 				McDreams.instance.getJoueurs().remove(getJoueur(joueur.getUuid()));
 			}

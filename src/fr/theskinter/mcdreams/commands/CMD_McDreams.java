@@ -16,8 +16,8 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
 import fr.theskinter.mcdreams.McDreams;
+import fr.theskinter.mcdreams.objects.Joueur;
 import fr.theskinter.mcdreams.utils.Skins.SkinsENUM;
-import fr.theskinter.mcdreams.utils.joueurs.Joueur;
 import fr.theskinter.mcdreams.utils.Utils;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;

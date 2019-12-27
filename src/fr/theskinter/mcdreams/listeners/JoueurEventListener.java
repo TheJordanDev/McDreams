@@ -18,8 +18,10 @@ import org.bukkit.event.server.TabCompleteEvent;
 
 import fr.theskinter.mcdreams.events.JoueurDamageEvent;
 import fr.theskinter.mcdreams.events.JoueurFoodChange;
+import fr.theskinter.mcdreams.events.RegionEnterEvent;
+import fr.theskinter.mcdreams.events.RegionLeaveEvent;
+import fr.theskinter.mcdreams.objects.Joueur;
 import fr.theskinter.mcdreams.utils.Utils;
-import fr.theskinter.mcdreams.utils.joueurs.Joueur;
 
 public class JoueurEventListener implements Listener {
 	
@@ -116,6 +118,16 @@ public class JoueurEventListener implements Listener {
 			player.sendTitle(" ", "§c§lTu ne peut faire ça ici !!", 10, 20, 10);
 			return;
 		}
+	}
+	
+	@EventHandler
+	public void onRegionEnter(RegionEnterEvent event) {
+		event.getPlayer().sendMessage("§9§lRegion Entrée : §3§l"+event.getRegion().getName());
+	}
+	
+	@EventHandler
+	public void onRegionExit(RegionLeaveEvent event) {
+		event.getPlayer().sendMessage("§9§lRegion Quitée : §3§l"+event.getRegion().getName());
 	}
 	
 }
