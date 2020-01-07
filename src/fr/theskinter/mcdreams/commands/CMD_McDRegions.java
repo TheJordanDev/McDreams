@@ -17,8 +17,15 @@ import fr.theskinter.mcdreams.objects.Cuboid;
 import fr.theskinter.mcdreams.objects.RegionManager;
 import fr.theskinter.mcdreams.objects.RegionManager.Region;
 import fr.theskinter.mcdreams.utils.TextCreator.ChatMessageCreator.Text;
+import lombok.Getter;
 
 public class CMD_McDRegions implements CommandExecutor, TabCompleter {
+
+	public enum Perms {
+		execute("mcdreams.command.mcregions");
+		@Getter private String perm;
+		private Perms(String perm) { this.perm = perm; }
+	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -26,6 +33,7 @@ public class CMD_McDRegions implements CommandExecutor, TabCompleter {
 			Player player = (Player) sender;
 			if (args.length == 0) {
 			} else if (args.length == 1) {
+				if (!player.hasPermission(Perms.execute.perm)) return false;
 				if (args[0].equalsIgnoreCase("create")) {
 					Location downCorner = player.getLocation().add(10D,10D,10D);
 					Location upCorner = player.getLocation().add(-10D,-10D,-10D);

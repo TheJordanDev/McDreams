@@ -3,6 +3,7 @@ package fr.theskinter.mcdreams.apis;
 import fr.theskinter.mcdreams.McDreams;
 import fr.theskinter.mcdreams.apis.citizens.CitizensAPI_GUI;
 import fr.theskinter.mcdreams.objects.Autopia;
+import fr.theskinter.mcdreams.objects.parc.ParcManager;
 
 public class API_Manager {
 	
@@ -26,6 +27,6 @@ public class API_Manager {
 	}
 	
 	private void protocolLib() {
-		McDreams.instance.setAutopia(new Autopia());
+		ParcManager.instance.setAutopia(new Autopia());
 	}
 }

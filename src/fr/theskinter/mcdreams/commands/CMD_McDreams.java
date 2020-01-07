@@ -18,15 +18,22 @@ import com.mojang.authlib.properties.Property;
 import fr.theskinter.mcdreams.McDreams;
 import fr.theskinter.mcdreams.objects.Joueur;
 import fr.theskinter.mcdreams.utils.Skins.SkinsENUM;
+import lombok.Getter;
 import fr.theskinter.mcdreams.utils.Utils;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 
-public class CMD_McDreams implements CommandExecutor, TabCompleter{
+public class CMD_McDreams implements CommandExecutor, TabCompleter {
+
+	public enum Perms {
+		execute("mcdreams.command.mcdreams");
+		@Getter private String perm;
+		private Perms(String perm) { this.perm = perm; }
+	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		if (!sender.hasPermission("mcdreams.cmd")) return false;
+		if (!sender.hasPermission(Perms.execute.perm)) return false;
 		if (args.length == 1) {
 			if (args[0].equalsIgnoreCase("maintenance")) {
 				McDreams.instance.setMaintenance(!McDreams.instance.isMaintenance());
@@ -96,10 +103,10 @@ public class CMD_McDreams implements CommandExecutor, TabCompleter{
 		
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
-		return getCompleters(args);
+		return getCompleters(sender,args);
 	}
 	
-	private List<String> getCompleters(String[] args) {
+	private List<String> getCompleters(CommandSender sender,String[] args) {
 		ArrayList<String> returned = new ArrayList<>();
 		List<String> args0 = Arrays.asList("god","maintenance","npc");
 		if (args.length == 1) {

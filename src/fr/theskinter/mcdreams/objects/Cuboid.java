@@ -8,18 +8,19 @@ import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 
 import fr.theskinter.mcdreams.utils.UtilMath;
+import lombok.Getter;
 
 public class Cuboid {
 	
 		private Location pointA;
 		private Location pointB;
-		public int xMin;
-		public int xMax;
-		public int yMin;
-		public int yMax;
-		public int zMin;
-		public int zMax;
-		public World world;
+		@Getter public int xMin;
+		@Getter public int xMax;
+		@Getter public int yMin;
+		@Getter public int yMax;
+		@Getter public int zMin;
+		@Getter public int zMax;
+		@Getter public World world;
 		public List<Location> locationsSquared;
 	
 	public Cuboid(Location paramLocation1, Location paramLocation2) {

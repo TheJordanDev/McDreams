@@ -13,7 +13,7 @@ import lombok.Getter;
 public class ItemCreator {
 	
 	@Getter
-	private String name = " ";
+	private String name;
 	@Getter
 	private Material mat = Material.AIR;
 	@Getter
@@ -24,6 +24,12 @@ public class ItemCreator {
 	private byte data = (byte)0;
 	@Getter
 	private boolean hideFlags = false;
+	@Getter int _savedInvSlot = -1;
+	
+	public ItemCreator setSavedInvSlot(int slot) {
+		this._savedInvSlot = slot;
+		return this;
+	}
 	
 	public ItemCreator setByte(byte data) {
 		this.data = data;
@@ -58,12 +64,10 @@ public class ItemCreator {
 	public ItemStack build() {
 		ItemStack item = new ItemStack(getMat(),getAmount(),getData());
 		ItemMeta im = item.getItemMeta();
-		im.setDisplayName(getName());
-		im.setLore(getLore());
+		if (getName() != null) { im.setDisplayName(getName()); }
+		if (!getLore().isEmpty()) { im.setLore(getLore()); }
 		if (isHideFlags()) {
-			for (ItemFlag flag : ItemFlag.values()) {
-				im.addItemFlags(flag);
-			}
+			for (ItemFlag flag : ItemFlag.values()) { im.addItemFlags(flag); }
 		}
 		item.setItemMeta(im);
 		return item;

@@ -1,15 +1,19 @@
 package fr.theskinter.mcdreams.objects;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.io.FilenameUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 
 import fr.theskinter.mcdreams.McDreams;
 import fr.theskinter.mcdreams.utils.FileUtils;
+import fr.theskinter.mcdreams.utils.JoueurTempStates;
 import fr.theskinter.mcdreams.utils.joueurs.JoueurManager;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,22 +21,29 @@ import lombok.Setter;
 public class Joueur {
 	
 	@Getter private UUID uuid;
+	//SAVED
 	@Getter @Setter private boolean god = true;
 	@Getter @Setter private boolean saturation = true;
 	@Getter @Setter private boolean chatNotified = true;
 	@Getter @Setter private boolean chatMuted = false;
 	@Getter @Setter private boolean place_break = false;
-	@Getter @Setter private boolean edit_inv = false;
+	@Getter @Setter private boolean use_fake_inv = true;
+	@Getter @Setter private boolean can_edit_inv = false;
 	@Getter @Setter private double money = 0D;
+	@Getter @Setter private Inventory backpack;
+	//NOT SAVED
+	@Getter private List<JoueurTempStates> states = new ArrayList<JoueurTempStates>();
 	
 	public Joueur(UUID uuid) {
 		this.uuid = uuid;
-		McDreams.instance.getJoueurs().add(this);
+		this.backpack = Bukkit.createInventory(null, 5*9, "§3§lSac à dos de §6§l"+Bukkit.getOfflinePlayer(uuid).getName());
+		JoueurManager.instance.getJoueurs().add(this);
 	}
 	
 	public Joueur(Player player) {
 		this.uuid = player.getUniqueId();
-		McDreams.instance.getJoueurs().add(this);
+		this.backpack = Bukkit.createInventory(null, 5*9, "§3§lSac à dos de §6§l"+player.getName());
+		JoueurManager.instance.getJoueurs().add(this);
 	}
 	
 	public OfflinePlayer getOfflinePlayerIfHasPlayed() {
@@ -54,17 +65,31 @@ public class Joueur {
 		return null;
 	}
 	
+	public boolean is(JoueurTempStates state) {
+		return getStates().contains(state);
+	}
+	
+	public void setState(JoueurTempStates state,boolean is) {
+		if (is) {
+			getStates().add(state);
+		} else {
+			if (is(state)) {
+				getStates().remove(state);
+			}
+		}
+	}
+	
 	public static Joueur getJoueur(Player player) {
 		return getJoueur(player.getUniqueId());
 	}
 	
 	public static Joueur getJoueur(UUID uuid) {
-		for (Joueur joueur : McDreams.instance.getJoueurs()) {
+		for (Joueur joueur : JoueurManager.instance.getJoueurs()) {
 			if (joueur.getUuid().equals(uuid)) {
 				return joueur;
 			}
 		}
-		McDreams.instance.getJoueurs().add(new Joueur(uuid));
+		JoueurManager.instance.getJoueurs().add(new Joueur(uuid));
 		return getJoueur(uuid);
 	}
 	
@@ -75,15 +100,15 @@ public class Joueur {
 			if (FilenameUtils.getExtension(file.getPath()).equals("json")) {
 				Joueur joueur = JoueurManager.instance.getJsm().deserialize(FileUtils.load(file));
 				if (doesJoueurExist(joueur.getUuid())) {
-					McDreams.instance.getJoueurs().remove(getJoueur(joueur.getUuid()));
+					JoueurManager.instance.getJoueurs().remove(getJoueur(joueur.getUuid()));
 				}
-					McDreams.instance.getJoueurs().add(joueur);
+				JoueurManager.instance.getJoueurs().add(joueur);
 			}
 		}
 	}
 	
 	public static void saveAll() {
-		for (Joueur joueur : McDreams.instance.getJoueurs()) {
+		for (Joueur joueur : JoueurManager.instance.getJoueurs()) {
 			joueur.save();
 		}
 	}
@@ -100,7 +125,7 @@ public class Joueur {
 	}
 	
 	public static boolean doesJoueurExist(UUID uuid) {
-		for (Joueur joueur : McDreams.instance.getJoueurs()) {
+		for (Joueur joueur : JoueurManager.instance.getJoueurs()) {
 			if (joueur.getUuid().equals(uuid)) {
 				return true;
 			}
@@ -113,10 +138,11 @@ public class Joueur {
 		if (playerFile.exists()) {
 			Joueur joueur = JoueurManager.instance.getJsm().deserialize(FileUtils.load(playerFile));
 			if (doesJoueurExist(joueur.getUuid())) {
-				McDreams.instance.getJoueurs().remove(getJoueur(joueur.getUuid()));
+				JoueurManager.instance.getJoueurs().remove(getJoueur(joueur.getUuid()));
 			}
-			McDreams.instance.getJoueurs().add(joueur);
+			JoueurManager.instance.getJoueurs().add(joueur);
 		}
 	}
+	
 	
 }

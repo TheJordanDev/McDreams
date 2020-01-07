@@ -4,6 +4,7 @@ import java.util.Base64;
 import java.util.UUID;
 
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -12,6 +13,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 
+import fr.theskinter.mcdreams.utils.Skins;
 import fr.theskinter.mcdreams.utils.Utils;
 import net.citizensnpcs.api.npc.NPC;
 
@@ -31,6 +33,15 @@ public class SkullUtils {
         Reflections.getField(headMetaClass, "profile", GameProfile.class).set(headMeta, profile);
         head.setItemMeta(headMeta);
         return head;
+    }
+    
+    public static ItemStack getSkullOfOfflinePlayer(OfflinePlayer player) {
+    	String texture = Skins.SkinsENUM.steve.getTEXTURE();
+    	ItemStack skull = SkullUtils.getCustomSkullFromTexture(texture);
+    	ItemMeta skullM = skull.getItemMeta();
+    	skullM.setDisplayName("§c§l"+player.getName());
+    	skull.setItemMeta(skullM);
+    	return skull;
     }
     
     public static ItemStack getCustomSkullFromTexture(String texture) {

@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -23,12 +22,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 import fr.theskinter.mcdreams.McDreams;
 import fr.theskinter.mcdreams.events.GUIInteractEvent;
 import fr.theskinter.mcdreams.objects.Joueur;
+import fr.theskinter.mcdreams.utils.JoueurTempStates;
 import fr.theskinter.mcdreams.utils.Skins;
 import fr.theskinter.mcdreams.utils.Skins.SkinsENUM;
 import fr.theskinter.mcdreams.utils.Skulls.SkullUtils;
 import fr.theskinter.mcdreams.utils.creators.GUICreator;
 import fr.theskinter.mcdreams.utils.creators.ItemCreator;
-import fr.theskinter.mcdreams.utils.filter.PlayerSorter;
+import fr.theskinter.mcdreams.utils.joueurs.JoueurManager;
 import lombok.Getter;
 
 public class GUI_McDreams {
@@ -200,33 +200,43 @@ public class GUI_McDreams {
 			setMaxLine(6);
 			setBackGround(new ItemCreator().setName(" ").setMaterial(Material.STAINED_GLASS_PANE).setByte((byte)7).build());
 			setSlot(0, exit());
-			List<Player> players = new ArrayList<>();
-			Iterator<? extends Player> it_players = Bukkit.getOnlinePlayers().iterator();
-			it_players.forEachRemaining(players::add);
-			Collections.sort(players,new PlayerSorter());
+			List<Joueur> joueurs = new ArrayList<>();
+			Iterator<? extends Joueur> it_joueurs = JoueurManager.instance.getJoueurs().iterator();
+			it_joueurs.forEachRemaining(joueurs::add);
+			Collections.sort(joueurs,JoueurManager.instance.getSorter());
 			getPlayerListPageBackup().put(uuid, page);
-				if (!players.isEmpty()) {
+				if (!joueurs.isEmpty()) {
 					if (page<1) {
 						open(uuid,1);
 					} else if (page == 1) {
 						int i = 0; 
 						for (int slot=9;slot<getSlots().size()-9;slot++) { 
-							if (players.size()<=i) {break;}
-							setSlot(slot, SkullUtils.getPlayerSkull(players.get(i)));
+							if (joueurs.size()<=i) {break;}
+							Joueur target = joueurs.get(i);
+							if (target.getOfflinePlayerIfHasPlayed().isOnline() && target.getPlayerIfOnline() != null) {
+								setSlot(slot, SkullUtils.getPlayerSkull(target.getPlayerIfOnline()));
+							} else {
+								setSlot(slot, SkullUtils.getSkullOfOfflinePlayer(target.getOfflinePlayerIfHasPlayed()));
+							}
 							i++;
 						}
-						if (players.size()>i) { 
+						if (joueurs.size()>i) { 
 							setSlot(50, next_btn);
 						}
 					} else if (page > 1){
 						int i = ((getLine()-18)*page)-27;
 						for (int slot=9;slot<getSlots().size()-9;slot++) {
-							if (players.size()<=i) { break;}
-							setSlot(slot, SkullUtils.getPlayerSkull(players.get(i)));	
+							if (joueurs.size()<=i) { break;}
+							Joueur target = joueurs.get(i);
+							if (target.getOfflinePlayerIfHasPlayed().isOnline()) {
+								setSlot(slot, SkullUtils.getPlayerSkull(joueurs.get(i).getPlayerIfOnline()));
+							} else {
+								setSlot(slot, SkullUtils.getSkullOfOfflinePlayer(target.getOfflinePlayerIfHasPlayed()));
+							}
 							i++;
 						}
 						setSlot(48, prev_btn);
-						if (players.size()>i) { 
+						if (joueurs.size()>i) { 
 							setSlot(50, next_btn);
 						}
 					}
@@ -241,10 +251,10 @@ public class GUI_McDreams {
 				if (event.getGui_id().equals(getId())) {
 					event.setCancelled(true);
 					if (event.getEvent().getClick() == ClickType.LEFT) {
-						List<Player> players = new ArrayList<Player>();
-						Iterator<? extends Player> it_players = Bukkit.getOnlinePlayers().iterator();
-						it_players.forEachRemaining(players::add);
-						players.sort(new PlayerSorter());
+						List<Joueur> joueurs = new ArrayList<>();
+						Iterator<? extends Joueur> it_joueurs = JoueurManager.instance.getJoueurs().iterator();
+						it_joueurs.forEachRemaining(joueurs::add);
+						Collections.sort(joueurs,JoueurManager.instance.getSorter());
 						UUID uuid = event.getEvent().getWhoClicked().getUniqueId();
 						Integer page = getPlayerListPageBackup().get(event.getEvent().getWhoClicked().getUniqueId());
 						if (event.getEvent().getCurrentItem().isSimilar(next_btn)) {
@@ -252,11 +262,11 @@ public class GUI_McDreams {
 						} else if (event.getEvent().getCurrentItem().isSimilar(prev_btn)) {
 							event.getEvent().getWhoClicked().openInventory(open(uuid, page-1));
 						} else if (event.getEvent().getCurrentItem().getType() == Material.SKULL_ITEM) {
-							getPlayerSelectedPlayerBackup().put(uuid, players.get(getPlayerIndex(uuid, event.getEvent().getRawSlot())).getUniqueId());
+							getPlayerSelectedPlayerBackup().put(uuid, joueurs.get(getPlayerIndex(uuid, event.getEvent().getRawSlot())).getUuid());
 							//Bukkit.broadcastMessage(event.getEvent().getRawSlot() + " " + page + " " + getNPCIndex(uuid, event.getEvent().getRawSlot()));
 							//NPC npcdd= npcs.get(getNPCIndex(uuid, event.getEvent().getRawSlot()));
 							//Bukkit.broadcastMessage(npcdd.getName() + " " + npcdd.getId());
-							event.getEvent().getWhoClicked().openInventory(getPlayerInfoMenu().build(uuid,players.get(getPlayerIndex(uuid, event.getEvent().getRawSlot())).getUniqueId()));
+							event.getEvent().getWhoClicked().openInventory(getPlayerInfoMenu().build(uuid,joueurs.get(getPlayerIndex(uuid, event.getEvent().getRawSlot())).getUuid()));
 						} else if (event.getEvent().getCurrentItem().isSimilar(exit())) {
 							event.getEvent().getWhoClicked().openInventory(mainMenu.build());
 						}
@@ -302,14 +312,15 @@ public class GUI_McDreams {
 			return creator.build(); 	
 		}
 		
-		private ItemStack canEditInvBtn(Joueur joueur) {
+		private ItemStack useFakeInventoryBtn(Joueur joueur) {
 			ItemCreator creator = new ItemCreator();
-			if (joueur.isEdit_inv()) {
-				creator.setName("§a§l✔EDIT INVENTAIRE✔");	
+			if (joueur.isUse_fake_inv()) {
+				creator.setName("§a§l✔FAKE INVENTAIRE✔");	
 			} else {
-				creator.setName("§c§l✖EDIT INVENTAIRE✖");
+				creator.setName("§c§l✖FAKE INVENTAIRE✖");
 			}
-			creator.setMaterial(Material.ARROW);
+			creator.setLore(Arrays.asList("§6§lCLIQUE DROIT §3§lpour ouvrir"));
+			creator.setMaterial(Material.ENDER_CHEST);
 			return creator.build(); 	
 		}
 		
@@ -337,9 +348,9 @@ public class GUI_McDreams {
 		
 		private ItemStack flyBtn(Joueur joueur) {
 			ItemCreator creator = new ItemCreator();
-			Player player = joueur.getPlayerIfOnline();
-			if (player != null) {
-				if (player.getAllowFlight()) {
+			OfflinePlayer player = joueur.getOfflinePlayerIfHasPlayed();
+			if (player.isOnline()) {
+				if (player.getPlayer().getAllowFlight()) {
 					creator.setName("§a§l✔FLY✔");	
 				} else {
 					creator.setName("§c§l✖FLY✖");
@@ -385,22 +396,20 @@ public class GUI_McDreams {
 			setMaxLine(3);
 			setBackGround(new ItemCreator().setName(" ").setMaterial(Material.STAINED_GLASS_PANE).setByte((byte)7).build());
 			getPlayerSelectedPlayerBackup().put(userID, targetID);
-			if (Bukkit.getPlayer(targetID).isOnline()) {
-				Joueur target = Joueur.getJoueur(Bukkit.getPlayer(targetID));
-				Player player = target.getPlayerIfOnline();
-				if (player != null) {
-					setName("§9§lJOUEUR §7§l- §b§l"+player.getName());
-				}
-				setSlot(0, exit());
-				setSlot(1, godBtn(target));
-				setSlot(2, muteBtn(target));
-				setSlot(3, flyBtn(target));
-				setSlot(4, breakPlaceBtn(target));
-				setSlot(5, canEditInvBtn(target));
-				setSlot(6, saturationBtn(target));
-				setSlot(7, moneyBtn());
-				setSlot(getLine()-1, reloadBtn());
+			Joueur target = Joueur.getJoueur(targetID);
+			OfflinePlayer player = target.getOfflinePlayerIfHasPlayed();
+			if (player != null) {
+				setName("§9§lJOUEUR §7§l- §b§l"+player.getName());
 			}
+			setSlot(0, exit());
+			setSlot(1, godBtn(target));
+			setSlot(2, muteBtn(target));
+			setSlot(3, flyBtn(target));
+			setSlot(4, breakPlaceBtn(target));
+			setSlot(5, useFakeInventoryBtn(target));
+			setSlot(6, saturationBtn(target));
+			setSlot(7, moneyBtn());
+			setSlot(getLine()-1, reloadBtn());
 			return super.build();
 		}
 		
@@ -418,9 +427,14 @@ public class GUI_McDreams {
 				} else if (item.isSimilar(muteBtn(joueur))) {
 					joueur.setChatMuted(!joueur.isChatMuted());
 					player.openInventory(build(player.getUniqueId(), joueur.getUuid()));
-				} else if (item.isSimilar(canEditInvBtn(joueur))) {
-					joueur.setEdit_inv(!joueur.isEdit_inv());
-					player.openInventory(build(player.getUniqueId(), joueur.getUuid()));
+				} else if (item.isSimilar(useFakeInventoryBtn(joueur))) {
+					if (event.getEvent().isLeftClick()) {
+						joueur.setUse_fake_inv(!joueur.isUse_fake_inv());
+						player.openInventory(build(player.getUniqueId(), joueur.getUuid()));
+					} else if (event.getEvent().isRightClick()) {
+						player.openInventory(joueur.getBackpack());
+						Joueur.getJoueur(player.getUniqueId()).setState(JoueurTempStates.LOOKING_INTO_BACKPACK_FROM_ADMIN, true);
+					}
 				} else if (item.isSimilar(flyBtn(joueur))) {
 					Player jPlayer = joueur.getPlayerIfOnline();
 					if (jPlayer != null) {
@@ -478,6 +492,7 @@ public class GUI_McDreams {
 		}
 		
 		public Inventory build(UUID pUUID,UUID tUUID) {
+			playerSelectedPlayerBackup.put(pUUID, tUUID);
 			setSlot(0, exit());
 			setSlot(2, moinBTN());
 			setSlot(4, moneyInfo(Joueur.getJoueur(tUUID)));

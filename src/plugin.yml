@@ -3,9 +3,11 @@ main: fr.theskinter.mcdreams.McDreams
 version: 1.0.0
 description:
 author: TheSkinter
-softdepend:
-depend:
+softdepend: [WorldEdit,Citizens]
+depend: []
 commands:
   mcdreams:
   meetandgreet:
   mcregions:
+  mcwarp:
+  mcparc:
