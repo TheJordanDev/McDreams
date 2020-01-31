@@ -2,7 +2,7 @@ package fr.theskinter.mcdreams.utils.filter;
 
 import java.util.Comparator;
 
-import fr.theskinter.mcdreams.objects.RegionManager.Region;
+import fr.theskinter.mcdreams.objects.managers.RegionManager.Region;
 
 public class RegionSorter implements Comparator<Region> {
     

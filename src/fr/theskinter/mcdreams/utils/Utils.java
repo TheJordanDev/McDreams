@@ -2,6 +2,8 @@ package fr.theskinter.mcdreams.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -10,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
@@ -18,6 +21,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.material.MaterialData;
 import org.bukkit.util.Vector;
 
 import com.mojang.authlib.GameProfile;
@@ -33,6 +37,10 @@ import com.sk89q.worldedit.schematic.MCEditSchematicFormat;
 import fr.theskinter.mcdreams.McDreams;
 import fr.theskinter.mcdreams.objects.Items;
 import fr.theskinter.mcdreams.objects.parc.Attraction;
+import io.chazza.advancementapi.AdvancementAPI;
+import io.chazza.advancementapi.FrameType;
+import io.chazza.advancementapi.Trigger;
+import io.chazza.advancementapi.Trigger.TriggerType;
 
 @SuppressWarnings("deprecation")
 public class Utils {
@@ -56,6 +64,13 @@ public class Utils {
 	        player.spawnParticle(Particle.REDSTONE, p1.getX(), p1.getY(), p1.getZ(), 1);
 	        length += space;
 	    }
+	}
+	
+	public static UUID UUIDfromString(String uuid) {
+		if (UUID.fromString(uuid) != null) {
+			return UUID.fromString(uuid);
+		}
+		return null;
 	}
 	
 	public static List<String> loopPlayers(String name) {
@@ -225,6 +240,50 @@ public class Utils {
 		else if (face == BlockFace.WEST) { return new com.sk89q.worldedit.Vector(-1, 0, -3); }
 		else if (face == BlockFace.EAST) { return new com.sk89q.worldedit.Vector(-1, 0, -3); }
 		else { return new com.sk89q.worldedit.Vector(); }
+	}
+	/*FULL ADVANCEMENT
+	 * 
+	 * AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+	 * 
+	 */
+	public static void send(String title, String description, MaterialData material, Player ... player){
+		AdvancementAPI test = AdvancementAPI.builder(new NamespacedKey(McDreams.instance, "story/" + UUID.randomUUID().toString()))
+        .frame(FrameType.GOAL)
+        .trigger(Trigger.builder(TriggerType.IMPOSSIBLE, "minecraft:impossible"))
+        .icon(material.getItemType().name())
+        .title(title)
+        .description(description)
+        .announce(false)
+        .toast(true)
+        .hidden(false)
+		.background("minecraft:textures/blocks/bedrock.png")
+		.build();
+		
+		test.show(McDreams.instance, player);
+		
+	}
+
+	public static Object getDeclaredField(Object object, String fieldName) {
+	    try {
+	        Field field = object.getClass().getDeclaredField(fieldName);
+	        field.setAccessible(true);
+	        return field.get(object);
+	    } catch (NoSuchFieldException | IllegalAccessException e) {
+	        e.printStackTrace();
+	        return null;
+	    }
+	}
+	 
+	public static void modifyFinalField(Field field, Object target, Object newValue) {
+	    try {
+	        field.setAccessible(true);
+	        Field modifierField = Field.class.getDeclaredField("modifiers");
+	        modifierField.setAccessible(true);
+	        modifierField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+	        field.set(target, newValue);
+	    } catch (NoSuchFieldException | IllegalAccessException e) {
+	        e.printStackTrace();
+	    }
 	}
 	
 }

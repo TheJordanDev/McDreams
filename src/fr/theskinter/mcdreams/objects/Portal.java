@@ -140,6 +140,9 @@ public class Portal extends Cuboid {
 				}
 			}
 		}
+		for (UUID entityUUID : entityTimerID) {
+			Bukkit.getEntity(entityUUID).remove();
+		}
 	}
 	
 	public void updateLocation(Location newLoc) {

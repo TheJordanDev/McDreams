@@ -9,17 +9,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import fr.theskinter.mcdreams.McDreams;
 import fr.theskinter.mcdreams.guis.GUI_Warps;
-import lombok.Getter;
 
 public class CMD_McDWarp implements CommandExecutor, TabCompleter {
 
-	public enum Perms {
-		execute("mcdreams.command.mcwarp");
-		@Getter private String perm;
-		private Perms(String perm) { this.perm = perm; }
-	}
-	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (sender instanceof Player) {
@@ -27,7 +21,8 @@ public class CMD_McDWarp implements CommandExecutor, TabCompleter {
 			if (args.length == 0) {
 				player.openInventory(GUI_Warps.instance.getWarpLandSelectGUI().open(player.getUniqueId(), 1));
 			} else {
-				if (!player.hasPermission(Perms.execute.perm)) return false;
+				if (!sender.hasPermission(McDreams.Perms.acces_staff_menu.p)) return false;
+				if (!player.hasPermission(McDreams.Perms.execute_cmd_mcwarp.p)) return false;
 			}
 		}
 		return false;

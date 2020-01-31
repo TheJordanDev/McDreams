@@ -1,4 +1,4 @@
-package fr.theskinter.mcdreams.utils.joueurs;
+package fr.theskinter.mcdreams.objects.managers;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,8 +18,6 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import fr.theskinter.mcdreams.McDreams;
-import fr.theskinter.mcdreams.guis.GUI_JoueurInventaire;
 import fr.theskinter.mcdreams.objects.Joueur;
 import fr.theskinter.mcdreams.utils.creators.ItemCreator;
 import lombok.Getter;
@@ -28,14 +26,12 @@ public class JoueurManager {
 	
 	public static JoueurManager instance;
 	@Getter private JoueurSerializationManager jsm;
-	@Getter private GUI_JoueurInventaire GUIJoueurInventaire;
 	@Getter private List<Joueur> joueurs = new ArrayList<>();
 	@Getter private JoueurSorter sorter = new JoueurSorter();
 	
 	public JoueurManager() {
 		instance = this;
 		this.jsm = new JoueurSerializationManager();
-		this.GUIJoueurInventaire = new GUI_JoueurInventaire(McDreams.instance);
 	}
 	
 	public class JoueurSorter implements Comparator<Joueur> {

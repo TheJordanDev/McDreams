@@ -8,7 +8,7 @@ import org.bukkit.conversations.FixedSetPrompt;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.StringPrompt;
 
-import fr.theskinter.mcdreams.objects.RegionManager;
+import fr.theskinter.mcdreams.objects.managers.RegionManager;
 import lombok.Getter;
 
 public class RegionPrompts {

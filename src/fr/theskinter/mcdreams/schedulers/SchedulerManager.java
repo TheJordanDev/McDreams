@@ -10,7 +10,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import fr.theskinter.mcdreams.objects.Portal;
 import fr.theskinter.mcdreams.objects.parc.Attraction;
 import fr.theskinter.mcdreams.objects.parc.Land;
-import fr.theskinter.mcdreams.objects.parc.ParcManager;
+import fr.theskinter.mcdreams.objects.parc.Parc;
 import lombok.Getter;
 
 public class SchedulerManager {
@@ -27,7 +27,7 @@ public class SchedulerManager {
 
 		@Override
 		public void run() {
-			Iterator<Land> landsIte = ParcManager.instance.getLands().iterator();
+			Iterator<Land> landsIte = Parc.instance.getLands().iterator();
 			while (landsIte.hasNext()) {
 				Land land = landsIte.next();
 				Iterator<Attraction> attraIte = land.getAttractions().iterator();
@@ -37,6 +37,10 @@ public class SchedulerManager {
 					while (portalsIte.hasNext()) {
 						Portal portal = portalsIte.next();
 						if (portal.isEnabled()) {
+							if (!attraction.isArePortalUsable()) {
+								portal.disable();
+								continue;
+							}
 							if (portal.getTimer() > 0) {
 								portal.setTimer(portal.getTimer()-1);
 								Iterator<UUID> entitiesIte = portal.getEntityTimerID().iterator();
@@ -52,7 +56,7 @@ public class SchedulerManager {
 								}
 								portal.disable(); portal.clear();
 								attraction.getPortals().remove(portal);
-								return;
+								continue;
 							}
 						} else {
 							Iterator<UUID> entitiesIte = portal.getEntityTimerID().iterator();
@@ -60,6 +64,7 @@ public class SchedulerManager {
 								UUID uuid = entitiesIte.next();
 								Bukkit.getEntity(uuid).setCustomName("§4§l[§c§lDESACTIVER§4§l]");
 							}
+							continue;
 						}
 					}
 				}

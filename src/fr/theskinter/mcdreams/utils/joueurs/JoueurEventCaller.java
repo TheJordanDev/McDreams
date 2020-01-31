@@ -13,8 +13,8 @@ import fr.theskinter.mcdreams.events.JoueurDamageEvent;
 import fr.theskinter.mcdreams.events.JoueurFoodChange;
 import fr.theskinter.mcdreams.events.RegionEnterEvent;
 import fr.theskinter.mcdreams.events.RegionLeaveEvent;
-import fr.theskinter.mcdreams.objects.RegionManager;
-import fr.theskinter.mcdreams.objects.RegionManager.Region;
+import fr.theskinter.mcdreams.objects.managers.RegionManager;
+import fr.theskinter.mcdreams.objects.managers.RegionManager.Region;
 import net.citizensnpcs.api.CitizensAPI;
 
 public class JoueurEventCaller implements Listener {

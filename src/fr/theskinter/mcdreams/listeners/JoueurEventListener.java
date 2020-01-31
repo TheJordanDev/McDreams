@@ -27,7 +27,9 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.server.TabCompleteEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.meta.SpawnEggMeta;
+import org.bukkit.material.MaterialData;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.json.JSONException;
 
 import fr.theskinter.mcdreams.McDreams;
 import fr.theskinter.mcdreams.events.JoueurDamageEvent;
@@ -38,7 +40,7 @@ import fr.theskinter.mcdreams.objects.Joueur;
 import fr.theskinter.mcdreams.objects.Portal;
 import fr.theskinter.mcdreams.objects.parc.Attraction;
 import fr.theskinter.mcdreams.objects.parc.Land;
-import fr.theskinter.mcdreams.objects.parc.ParcManager;
+import fr.theskinter.mcdreams.objects.parc.Parc;
 import fr.theskinter.mcdreams.utils.JoueurTempStates;
 import fr.theskinter.mcdreams.utils.Utils;
 
@@ -47,6 +49,7 @@ public class JoueurEventListener implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
 		if (!Joueur.doesJoueurExist(event.getPlayer())) {
+			Utils.updatePlayerPVP(event.getPlayer());
 			new Joueur(event.getPlayer());
 		}
 	}
@@ -90,10 +93,15 @@ public class JoueurEventListener implements Listener {
 			args[0] = args[0].replaceFirst("/", "");
 			player.sendTitle("§c§lNOPE", " ", 10, 20, 10);
 		}
+		
 	}
 	
 	@EventHandler(priority=EventPriority.HIGHEST)
-	public void onChatMention(AsyncPlayerChatEvent event) {
+	public void onChatMention(AsyncPlayerChatEvent event) throws JSONException {
+		if (event.getMessage().length() >= 1) {
+			if (event.getMessage().length() >= 40) Utils.send(event.getMessage().substring(0, 40)," ", new MaterialData(Material.JUKEBOX), event.getPlayer());
+			else Utils.send(event.getMessage()," ", new MaterialData(Material.JUKEBOX), event.getPlayer());
+		}
 		if (event.getMessage().equals("inv")) { event.getPlayer().openInventory(Joueur.getJoueur(event.getPlayer()).getBackpack()); }
 		if (Joueur.getJoueur(event.getPlayer()).isChatMuted()) { event.setCancelled(true); return; }
 		StringBuilder message = new StringBuilder();
@@ -173,7 +181,7 @@ public class JoueurEventListener implements Listener {
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(ignoreCancelled=true)
 	public void onItemClickBlockEvent(PlayerInteractEvent event) {
 		if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 		if (event.getPlayer().getInventory().getItemInOffHand().getType() == Material.MONSTER_EGG) {
@@ -184,7 +192,7 @@ public class JoueurEventListener implements Listener {
 					event.setCancelled(true);
 					String attraName = meta.getDisplayName().replace("§6§lGénérateur de porail pour §9§l", "");
 					String landName = ChatColor.stripColor(meta.getLore().get(1));
-					Land land = ParcManager.instance.getLandByName(landName); if (land == null) return;
+					Land land = Parc.instance.getLandByName(landName); if (land == null) return;
 					Attraction attraction = land.getAttractionByName(attraName); if (attraction == null) return;
 					BlockFace faceReference = Utils.getCardinalDirection(event.getPlayer()); if (faceReference == null) return;
 					Location loc;

@@ -11,11 +11,32 @@ import lombok.Setter;
 
 public class Attraction {
 
+	public enum STATE { OPEN("§a§l"),CLOSE("§c§l"),MAINTENANCE("§6§l"); 
+		
+		@Getter private String couleur;
+		
+		private STATE(String couleur) {
+			this.couleur = couleur;
+		}
+		
+	    public STATE next() {
+	        return STATE.values()[(this.ordinal()+1) % STATE.values().length];
+	    }
+		
+	    public static STATE forName(String name) {
+	    	for (STATE value : values()) { if (value.name().equals(name)) { return value; } } return null;
+	    }
+	    
+	}
+	
 	@Getter public static AttractionSorter sorter = new AttractionSorter();
 	
-	@Getter private String name = "";
+	@Getter private LinkedList<Portal> portals = new LinkedList<Portal>();
+	
+	@Getter @Setter private String name = "";
 	@Getter @Setter private Location warpLocation; public boolean canBeWarpedAt() { return (getWarpLocation() != null); }
-	@Getter private LinkedList<Portal> portals = new LinkedList<Portal>(); 
+	@Getter @Setter private boolean arePortalUsable = true;
+	@Getter @Setter STATE state = STATE.CLOSE;
 	
 	public Attraction(String name) {
 		this.name = name;

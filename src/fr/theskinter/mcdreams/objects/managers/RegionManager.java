@@ -1,4 +1,4 @@
-package fr.theskinter.mcdreams.objects;
+package fr.theskinter.mcdreams.objects.managers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.bukkit.Location;
 
+import fr.theskinter.mcdreams.objects.Cuboid;
 import lombok.Getter;
 
 public class RegionManager {

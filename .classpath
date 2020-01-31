@@ -6,5 +6,7 @@
 	<classpathentry kind="lib" path="C:/Users/user/librarys/lombok.jar" sourcepath="C:/Users/user/.sourceattacher/lombok-1.18.4-sources.jar"/>
 	<classpathentry kind="lib" path="C:/Users/user/librarys/spigot/[1.12.2] Citizens.jar"/>
 	<classpathentry kind="lib" path="C:/Users/user/Desktop/Projets/McDreams/WorldEdit.jar"/>
+	<classpathentry kind="lib" path="C:/Users/user/Desktop/Projets/McDreams/OpenAudioMc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/user/Desktop/Projets/McDreams/McDreams 1.12.2/plugins/ProtocolLib.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

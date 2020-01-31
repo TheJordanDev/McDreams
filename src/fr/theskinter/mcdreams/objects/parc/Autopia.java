@@ -1,4 +1,4 @@
-package fr.theskinter.mcdreams.objects;
+package fr.theskinter.mcdreams.objects.parc;
 
 import java.util.ArrayList;
 import java.util.HashMap;

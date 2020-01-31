@@ -18,22 +18,16 @@ import com.mojang.authlib.properties.Property;
 import fr.theskinter.mcdreams.McDreams;
 import fr.theskinter.mcdreams.objects.Joueur;
 import fr.theskinter.mcdreams.utils.Skins.SkinsENUM;
-import lombok.Getter;
 import fr.theskinter.mcdreams.utils.Utils;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 
 public class CMD_McDreams implements CommandExecutor, TabCompleter {
 
-	public enum Perms {
-		execute("mcdreams.command.mcdreams");
-		@Getter private String perm;
-		private Perms(String perm) { this.perm = perm; }
-	}
-
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		if (!sender.hasPermission(Perms.execute.perm)) return false;
+		if (!sender.hasPermission(McDreams.Perms.acces_staff_menu.p)) return false;
+		if (!sender.hasPermission(McDreams.Perms.execute_cmd_mcdreams.p)) return false;
 		if (args.length == 1) {
 			if (args[0].equalsIgnoreCase("maintenance")) {
 				McDreams.instance.setMaintenance(!McDreams.instance.isMaintenance());

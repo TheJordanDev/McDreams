@@ -22,13 +22,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 import fr.theskinter.mcdreams.McDreams;
 import fr.theskinter.mcdreams.events.GUIInteractEvent;
 import fr.theskinter.mcdreams.objects.Joueur;
+import fr.theskinter.mcdreams.objects.managers.JoueurManager;
 import fr.theskinter.mcdreams.utils.JoueurTempStates;
 import fr.theskinter.mcdreams.utils.Skins;
 import fr.theskinter.mcdreams.utils.Skins.SkinsENUM;
 import fr.theskinter.mcdreams.utils.Skulls.SkullUtils;
 import fr.theskinter.mcdreams.utils.creators.GUICreator;
 import fr.theskinter.mcdreams.utils.creators.ItemCreator;
-import fr.theskinter.mcdreams.utils.joueurs.JoueurManager;
 import lombok.Getter;
 
 public class GUI_McDreams {
@@ -114,6 +114,7 @@ public class GUI_McDreams {
 			if (event.getGui_id().equals(getId())) {
 				event.setCancelled(true);
 				Player player = (Player)event.getEvent().getWhoClicked();
+				if (!player.hasPermission(McDreams.Perms.acces_staff_menu.p)) return;
 				ItemStack item = event.getEvent().getCurrentItem();
 				if (item.isSimilar(npcBtn())) {
 					player.openInventory(McDreams.instance.getCitizensGUI().getList().open(player.getUniqueId(), 1));

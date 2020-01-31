@@ -20,8 +20,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import fr.theskinter.mcdreams.McDreams;
 import fr.theskinter.mcdreams.events.GUIInteractEvent;
-import fr.theskinter.mcdreams.objects.RegionManager;
-import fr.theskinter.mcdreams.objects.RegionManager.Region;
+import fr.theskinter.mcdreams.objects.managers.RegionManager;
+import fr.theskinter.mcdreams.objects.managers.RegionManager.Region;
 import fr.theskinter.mcdreams.utils.creators.GUICreator;
 import fr.theskinter.mcdreams.utils.creators.ItemCreator;
 import fr.theskinter.mcdreams.utils.filter.PlayerSorter;

@@ -12,9 +12,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import fr.theskinter.mcdreams.McDreams;
+import fr.theskinter.mcdreams.objects.managers.JoueurManager;
 import fr.theskinter.mcdreams.utils.FileUtils;
 import fr.theskinter.mcdreams.utils.JoueurTempStates;
-import fr.theskinter.mcdreams.utils.joueurs.JoueurManager;
 import lombok.Getter;
 import lombok.Setter;
 

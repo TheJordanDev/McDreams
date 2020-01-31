@@ -6,7 +6,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import fr.theskinter.mcdreams.objects.RegionManager.Region;
+import fr.theskinter.mcdreams.objects.managers.RegionManager.Region;
 import lombok.Getter;
 
 public class RegionLeaveEvent extends Event implements Cancellable{
