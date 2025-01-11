@@ -105,14 +105,14 @@ public class Skins {
 	
 	public class SkinChanger_Menu extends GUICreator {
 		
-		private ItemStack next_btn = new ItemCreator().setName("§e§lSuivant").setMaterial(Material.GOLD_PLATE).build();
-		private ItemStack prev_btn = new ItemCreator().setName("§6§lPrécédent").setMaterial(Material.IRON_PLATE).build();
+		private ItemStack next_btn = new ItemCreator().setName("Â§eÂ§lSuivant").setMaterial(Material.GOLD_PLATE).build();
+		private ItemStack prev_btn = new ItemCreator().setName("Â§6Â§lPrÃ©cÃ©dent").setMaterial(Material.IRON_PLATE).build();
 		
 		private ItemStack skin_btn(SkinsENUM skin) {
 			ItemStack creator = SkullUtils.getCustomSkullFromTexture(skin.getTEXTURE());
 			ItemMeta meta = creator.getItemMeta();
 			String name = skin.name();
-			meta.setDisplayName("§e§l"+name.substring(0,1).toUpperCase()+name.substring(1));
+			meta.setDisplayName("Â§eÂ§l"+name.substring(0,1).toUpperCase()+name.substring(1));
 			creator.setItemMeta(meta);
 			return creator;
 		}
@@ -129,7 +129,7 @@ public class Skins {
 			Player player = joueur.getPlayerIfOnline();
 			getSelectedPlayer_backup().put(pUUID, tUUID);
 			if (player != null) {
-				setName("§9§lSkin Changer §7§l: §6§l"+player.getName());
+				setName("Â§9Â§lSkin Changer Â§7Â§l: Â§6Â§l"+player.getName());
 			}
 			List<SkinsENUM> npcs = new ArrayList<SkinsENUM>(Arrays.asList(SkinsENUM.values()));
 			getPlayerSkinPageList().put(pUUID, page);
@@ -159,7 +159,7 @@ public class Skins {
 					}
 				}
 			} else {
-				setSlot(22, new ItemCreator().setName("§7§lAucun Skins !!").setMaterial(Material.PAPER).build());
+				setSlot(22, new ItemCreator().setName("Â§7Â§lAucun Skins !!").setMaterial(Material.PAPER).build());
 			}
 			return build();
 		}
